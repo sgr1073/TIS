@@ -1,0 +1,1 @@
+#This repository while available for use by client, may not be used by any other client with the intent to circumvent fees and platform use. Relevant client agreement applies to use of all of Jasper Wiping and Inventory assets
