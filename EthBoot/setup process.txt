@@ -1,0 +1,1039 @@
+1. Update drivers for video cards where video is small
+2. Install
+
+
+#####screen resolution issue quick fix
+
+
+    Open a Terminal by CTRL+ALT+T
+
+    Type xrandr and ENTER
+
+    Note the display name usually VGA-1 or HDMI-1 or DP-1
+
+    Type cvt 1920 1080 (to get the --newmode args for the next step) and ENTER
+
+xrandr --newmode "1920x1080"  173.00 -hsync +vsync
+xrandr --addmode DisplayPort-0 "1920x1080"
+xrandr -s "1920x1080"
+
+xrandr --newmode "1920x1080"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+xrandr --addmode VGA-1 "1920x1080"
+xrandr -s "1920x1080"
+
+
+    Now close the terminal and go to Settings >> Display settings and change it to 1920x1080
+
+    Enjoy FHD.
+
+me="table01"
+mkdir /home/clientshared
+chown "$me" /home/clientshared
+chmod -R 777 /home/clientshared
+echo "1" > /proc/scsi/sg/allow_dio
+dpkg --add-architecture i386
+apt update
+apt install -y libx11-6:i386 zlib1g:i386
+apt update -y
+apt install -y smartmontools
+apt install -y sg3-utils
+apt install -y gddrescue
+apt install -y sdparm
+apt install -y pip
+apt install -y mysql-server
+apt install -y smartmontools
+apt install -y minicom
+apt install -y curl
+apt-get install -y unixodbc-dev
+
+me="table01"
+echo "
+$me ALL=(ALL) NOPASSWD: /usr/sbin/smartctl
+$me ALL=(ALL) NOPASSWD: /usr/sbin/find
+$me ALL=(ALL) NOPASSWD: /usr/sbin/blockdev
+$me ALL=(ALL) NOPASSWD: /usr/bin/ddrescue
+$me ALL=(ALL) NOPASSWD: /usr/sbin/hdparm
+$me ALL=(ALL) NOPASSWD: /home/clientshared/.HD
+$me ALL=(ALL) NOPASSWD: /usr/bin/sg_format
+$me ALL=(ALL) NOPASSWD: /usr/bin/sg_requests
+$me ALL=(ALL) NOPASSWD: /usr/bin/sdparm
+$me ALL=(ALL) NOPASSWD: /usr/bin/sg_dd
+$me ALL=(ALL) NOPASSWD: /usr/bin/sg_map
+$me ALL=(ALL) NOPASSWD: /usr/bin/sginfo
+$me ALL=(ALL) NOPASSWD: /usr/sbin/dmidecode
+$me ALL=(ALL) NOPASSWD: /usr/bin/minicom
+$me ALL=(ALL) NOPASSWD: /usr/bin/pkill
+$me ALL=(ALL) NOPASSWD: /usr/bin/killall
+" | sudo tee -a /etc/sudoers
+
+
+
+##regular create all files
+mkdir /home/clientshared/.General
+touch /home/clientshared/.General/.employee
+touch /home/clientshared/.General/.job_number
+touch /home/clientshared/.General/.job
+
+mkdir /home/clientshared/.Temp
+for i in {1..18};
+do
+if [[ "$i" -lt 10 ]]; then z="0$i"; else z="$i"; false; fi
+mkdir /home/clientshared/.Temp/.B"$z"
+touch /home/clientshared/.Temp/.B"$z"/.p.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.p.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.log.log
+echo "a" > /home/clientshared/.Temp/.B"$z"/.log.log
+
+touch /home/clientshared/.Temp/.B"$z"/.te.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.te.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.tr.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.tr.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.etf.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.etf.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.prg.txt
+echo "Failed" > /home/clientshared/.Temp/.B"$z"/.prg.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.c.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.c.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.tc.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.tc.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.tr1.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.tr1.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.s.txt
+echo "" > /home/clientshared/.Temp/.B"$z"/.s.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.dev.txt
+echo "$dev7" > /home/clientshared/.Temp/.B"$z"/.dev.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.stopping.txt
+echo "$dev7" > /home/clientshared/.Temp/.B"$z"/.stopping.txt
+
+touch /home/clientshared/.Temp/.B"$z"/.loc.txt
+echo "$dev7" > /home/clientshared/.Temp/.B"$z"/.loc.txt
+
+sudo killall .Bay"$i".sh
+
+done
+
+pip3 install --no-input pandas
+pip3 install --no-input sendgrid
+pip3 install --no-input postmarker
+pip3 install --no-input openpyxl
+pip3 install --no-input pyodbc
+pip3 install --no-input mysql.connector
+
+
+
+
+if needed to change for what ever version on local comp
+sudo update-alternatives --config python3
+
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.10
+sudo apt-get install python3.9
+sudo apt-get install python3.8
+
+
+update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+
+reina.santiago.g@gmail.com
+
+
+###
+a=$(sudo /home/clientshared/.HD -solid | awk '{print $1,$6}' | tr '\n' ',')
+IFS=',' read -r -a array <<< "$a"
+####
+for i in "${array[@]}"
+do
+serial=$(echo "$i" | awk '{print $2}')
+dev=$(echo "$i" | awk '{print $1}')
+dev7="sd${dev##*sd}"
+h=$(find /sys/class/scsi_host/host*/device/phy-*/port/expander-*/phy-*/port/ -type d -name "$dev7" | head -n 1)
+h=$(echo "$h" | sed 's/end.*//')
+#h=$(echo "${h##*:}" | cut -d '/' -f 1)
+echo "$serial is $h"
+done
+
+for i in {1..150}
+do
+if [[ "$i" -lt 10 ]]; then z="0$i"; else z="$i"; false; fi
+echo "No Device" > /home/clientshared/.Temp/.B"$z"/.log.log
+echo "No Device" > /home/clientshared/.Temp/.B"$z"/.prg.txt
+done
+
+sudo sysctl net.ipv6.conf.all.disable_ipv6=1
+
+
+for i in {1..150}
+do
+if [[ "$i" -lt 10 ]]; then z="0$i"; else z="$i"; false; fi
+echo "No Device" > /home/clientshared/.Temp/.B"$z"/.log.log
+echo "No Device" > /home/clientshared/.Temp/.B"$z"/.prg.txt
+done
+
+#### clear out %
+for i in {1..4};
+do
+if [[ "$i" -lt 10 ]]; then z="0$i"; else z="$i"; false; fi
+test=$(cat /home/clientshared/.Temp/.B"$z"/.prg.txt)
+if [[ "$test" = "Wiping" ]]
+then
+echo "No Device" > /home/clientshared/.Temp/.B"$z"/.prg.txt
+else false
+fi
+
+for i in {1..4};
+do
+sudo killall .Bay"$i".sh
+done
+
+sudo dd if=/dev/nvme0n1 of=- count=4MB bs=100 dio=1 | od
+
+
+SSDD=$(sudo blockdev --getsize64 /dev/nvme0n1)
+ac="B01"
+sudo ddrescue -fDnN -r 1 -s ${SSDD//[!0-9]/} -b 8 -K 0 --log-events=/home/clientshared/.Temp/."$ac"/.log.log /dev/zero /dev/nvme0n1 > /home/clientshared/.Temp/."$ac"/.dump.txt 
+
+
+
+test_sg=$(sudo badblocks -e 1 -svt 0x00 /dev/nvme0n1 4000)
+t_sg=$(test_sg | wc -l)
+if [[ "$t_sg" == 1 ]]; then num1=3; else num1=1; fi
+
+
+
+test_d=$(sudo smartctl --scan | grep "nvme")
+if [[ -z "$test_d" ]]
+    then
+      dev7=$(sudo smartctl --scan | awk '{print $1}')
+    else
+      dev7="/dev/nvme0"
+fi
+echo "$dev7"
+
+dev7=$(sudo smartctl --scan | awk '{print $1}')
+hdsent=$(sudo /home/clientshared/.HD -solid)
+s7=$(echo "$hdsent" | grep "nvme" | awk '{print $6}')
+c7=$(sudo smartctl -i /dev/nvme0 | grep -i "Size/Capacity" | awk '{print $5,$6}' | tr -d "[ ]")
+s7=$(echo "$hdsent" | grep "nvme" | awk '{print $5}')
+t7="NVMe"
+rpm="Solid State"
+echo "$s7 $c7 $t7 "
+
+
+sudo hdparm -N /dev/nvme0
+
+
+
+sudo /home/clientshared/.HD -solid /dev/nvme0
+
+sudo smartctl -i /dev/nvme0 | grep -i "Size/Capacity" | awk '{print $5,$6}' | tr -d "[ ]"
+
+sda
+
+h=$(find /sys/class/scsi_host/host*/device/phy-*/port/expander-*/phy-*/port/ -type d -name "$dev7" | head -n 1)
+h=$(echo "$h" | sed 's/end.*//')
+#h=$(echo "${h##*:}" | cut -d '/' -f 1)
+echo "$serial is $h"
+
+
+############ random
+smart=$(sudo smartctl --scan | awk '{print $1}' | tr '\n' ' ')
+sdaa=$(echo "$smart" | awk '{print $1}')
+sdaa=${sdaa##*dev/}
+h1=$(find /sys/class/scsi_host/host*/device/target*/*/block/ -type d -name "$sdaa" | head -n 1)
+echo "$h1" > /home/clientshared/.Temp/.B01/.dev.txt
+echo "$h1"
+
+sdab=$(echo "$smart" | awk '{print $2}')
+sdab=${sdab##*dev/}
+h2=$(find /sys/class/scsi_host/host*/device/target*/*/block/ -type d -name "$sdab" | head -n 1)
+echo "$h2" > /home/clientshared/.Temp/.B02/.dev.txt
+echo "$h2"
+
+sdac=$(echo "$smart" | awk '{print $3}')
+sdac=${sdac##*dev/}
+h3=$(find /sys/class/scsi_host/host*/device/target*/*/block/ -type d -name "$sdac" | head -n 1)
+echo "$h3" > /home/clientshared/.Temp/.B03/.dev.txt
+echo "$h3"
+
+sdad=$(echo "$smart" | awk '{print $4}')
+sdad=${sdad##*dev/}
+h4=$(find /sys/class/scsi_host/host*/device/target*/*/block/ -type d -name "$sdad" | head -n 1)
+echo "$h4" > /home/clientshared/.Temp/.B04/.dev.txt
+echo "$h4"
+
+for i in {1..4};
+do  
+h1=$(cat /home/clientshared/.Temp/.B0"$i"/.dev.txt)
+h1=$(echo "$h1" | awk '{print $1}')
+dev7=${h1##*/block/}
+s7=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $6}')
+touch /home/clientshared/.Temp/.B0"$i"/.dev.txt
+echo "$s7" > /home/clientshared/.Temp/.B0"$i"/.s.txt
+done
+
+###########
+###
+a=$(sudo /home/clientshared/.HD -solid | awk '{print $1,$6}' | tr '\n' ',')
+IFS=',' read -r -a array <<< "$a"
+####
+for i in "${array[@]}"
+do
+serial=$(echo "$i" | awk '{print $2}')
+dev=$(echo "$i" | awk '{print $1}')
+dev7="sd${dev##*sd}"
+h=$(find /sys/class/scsi_host/host*/*/port/ -type d -name "$dev7" | head -n 1)
+h=$(echo "$h" | sed 's/end.*//')
+#h=$(echo "${h##*:}" | cut -d '/' -f 1)
+echo "$serial is $h"
+done
+
+
+###
+a=$(sudo /home/clientshared/.HD -solid | awk '{print $1,$6}' | tr '\n' ',')
+IFS=',' read -r -a array <<< "$a"
+####
+for i in "${array[@]}"
+do
+serial=$(echo "$i" | awk '{print $2}')
+dev=$(echo "$i" | awk '{print $1}')
+dev7="sd${dev##*sd}"
+h=$(find /sys/class/scsi_host/host*/device/phy-*/*/port/ -type d -name "$dev7" | head -n 1)
+h=$(echo "$h" | sed 's/end.*//')
+#h=$(echo "${h##*:}" | cut -d '/' -f 1)
+echo "$serial is $h"
+done
+
+
+sudo smartctl --scan | awk '{print $1}' | tr '\n' ' '
+
+total=$(sudo smartctl --scan | awk '{print $1}')
+for i in $total;
+do
+test="$i"
+done
+
+cat "/home/clientshared/.Temp/.B01/.dev.txt"
+cat "/home/clientshared/.Temp/.B02/.dev.txt"
+cat "/home/clientshared/.Temp/.B03/.dev.txt"
+cat "/home/clientshared/.Temp/.B04/.dev.txt"
+
+
+h1=$(cat /home/clientshared/.Temp/.B01/.dev.txt)
+h1=$(echo "$h1" | awk '{print $1}')
+h1=${h1::-3}
+echo "$h1"
+
+##############
+cat /home/clientshared/.Temp/.B01/.dev.txt
+cat /home/clientshared/.Temp/.B02/.dev.txt
+cat /home/clientshared/.Temp/.B03/.dev.txt
+cat /home/clientshared/.Temp/.B04/.dev.txt
+
+
+s7="W4714YYM"
+ip_address=$(wget -qO- http://ipecho.net/plain | xargs echo)
+ producing_count=$(mysql -u TIS -pJasper2010! -h ls-4ea15f451c8aec4f3d3aaa1ae11f9f670b0e85ba.cbwhq8cxbmbu.us-east-1.rds.amazonaws.com --port 3306 -se "select '$s7' from jasperprogram.producing where serial = '$s7'" | wc -l)
+    if [[ "$producing_count" == 0 ]]; then process="Wipe"; else process="Repair $producing_count"; fi
+    echo "$process"
+    
+    
+         # # BAYS SEARCH
+          # #4Bay
+          # dev7=$(cat /home/clientshared/.Temp/."$ac"/.dev.txt)
+          #45 BAY
+          hst=$(cat /home/clientshared/set96.txt | grep "$ac" | awk '{print $2}')
+          ex=$(cat /home/clientshared/set96.txt | grep "$ac" | awk '{print $3}')
+          ex2=$(cat /home/clientshared/set96.txt | grep "$ac" | awk '{print $4}')
+          loc=$(cat /home/clientshared/set96.txt | grep "$ac" | awk '{print $5}')
+          dev7=$(find /sys/class/scsi_host/host"$hst"/device/phy-"$hst":"$ex2"/port/expander-"$hst":*/phy-"$hst":*:"$loc"/port/ -type d -name "sd*" | head -n 1)
+          dev7="sd${dev7##*sd}"
+          s7=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $6}')
+          echo "$s7"
+          #
+          # #24 Bay
+          # d=$(cat /home/clientshared/.set.txt | grep "$ac" | awk '{print $2}')
+          # h=$(cat /home/clientshared/.set.txt | grep "$ac" | awk '{print $3}')
+          # dev7=$(find /sys/class/scsi_host/host"$h"/device/phy-"$h":"$d"/port/ -type d -name "sd*" | head -n 1)
+          # dev7="sd${dev7##*sd}"
+          #
+          # #15 Bay
+          # h=$(find /sys/class/scsi_host/*/device/ -type d -name "phy-*:15" | head -n 1 | cut -d '/' -f 5)
+          # h=${h##*host}
+          # d=$(cat /home/clientshared/.set.txt | grep "$ac" | awk '{print $2}')
+          # dev7=$(find /sys/class/scsi_host/host"$h"/device/phy-"$h":"$d"/port/ -type d -name "sd*" | head -n 1)
+          # dev7="sd${dev7##*sd}"
+
+          sleep 1
+          ht=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $3}')
+          if [[ "$ht" == "?" ]] || [[ "$ht" == "" ]]; then ht=0; else false; fi
+          echo "" > /home/clientshared/.Temp/."$ac"/.tr.txt
+          echo "$te" > /home/clientshared/.Temp/."$ac"/.te.txt
+          echo "" > /home/clientshared/.Temp/."$ac"/.etf.txt
+          result2="Failed: Wiping"
+          result="Failed"
+          hdsent=$(sudo /home/clientshared/.HD -dev /dev/"$dev7")
+          s7=$(echo "$hdsent" | grep "HDD Serial" | awk '{print $4}')
+          #verify through sg
+          ttSAT=$(sudo smartctl -i /dev/"$dev7" | grep "SATA")
+          ttSAS=$(sudo smartctl -i /dev/"$dev7" | grep "SAS")
+          if [[ -z "$ttSAT" ]]; then if [[ ! -z "ttSAS" ]]; then t7="SAS"; else "NA"; fi; else t7="SATA"; fi
+
+          #rotation per minute
+          rpm=$(sudo smartctl -i /dev/"$dev7" | grep -i "rotation" | awk '{print $3,$4}')
+          rpm1=$(sudo smartctl -i /dev/"$dev7" | grep -i "solid")
+          if [[ ! -z $rpm1 ]]; then rpm="SSD"; else false; fi
+          #manufacturer and model
+          testman=$(echo "$hdsent" | grep "Model" | wc -w)
+          if [[ $"testman" -eq 6 ]];
+          then mdl=$(echo "$hdsent" | grep "Model" | awk '{print $6}'); manuf=$(echo "$hdsent" | grep "Model" | awk '{print $5}');
+          else manuf="None"; mdl=$(echo "$hdsent" | grep "Model" | awk '{print $5}'); fi
+          #send serial
+          touch /home/clientshared/.Temp/."$ac"/.s.txt
+          echo "$s7" > /home/clientshared/.Temp/."$ac"/.s.txt
+          #send type
+          echo "$t7" > /home/clientshared/.Temp/."$ac"/.t.txt
+          #send capacity
+          c7=$(sudo smartctl -i /dev/"$dev7" | grep -i "capacity" | awk '{print $5,$6}' | tr -d "[ ]")
+          echo "$c7" > /home/clientshared/.Temp/."$ac"/.c.txt
+          echo "$c7 $t7" > /home/clientshared/.Temp/."$ac"/.tc.txt
+          echo "$result" > /home/clientshared/.Temp/."$ac"/.prg.txt
+        dte=$(date "+%Y-%m-%d")
+        cserial=$(sudo dmidecode -t system | grep Serial | awk '{print $3}')
+    if [[ -z "$ch" ]]; then ch="N"; else true; fi
+    me=$(whoami)
+    size1=$(sudo smartctl -i /dev/"$dev7" | grep "Form Factor:" | awk '{print $3}')
+
+    touch /home/clientshared/.Temp/."$ac"/.tr1.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.tr1.txt
+    #location="jasperprogram.TIS_JBOD"
+
+    # location="jasperprogram.TIS"
+    ip_address=$(wget -qO- http://ipecho.net/plain | xargs echo)
+    producing_count=$(mysql -u TIS -pJasper2010! -h ls-4ea15f451c8aec4f3d3aaa1ae11f9f670b0e85ba.cbwhq8cxbmbu.us-east-1.rds.amazonaws.com --port 3306 -se "select '$s7' from jasperprogram.producing where serial = '$s7'" | wc -l)
+    if [[ "$producing_count" == 0 ]]; then process="Wipe"; else process="Repair $producing_count"; fi
+    echo "$process"
+    
+    
+############# stuff
+
+employee=$(cat /home/clientshared/.Temp/."$ac"/.employee.txt)
+loadnm=$(cat /home/clientshared/.Temp/."$ac"/.load.txt)
+
+touch /home/clientshared/.Temp/."$ac"/.prg.txt
+touch /home/clientshared/.Temp/."$ac"/.tr.txt
+touch /home/clientshared/.Temp/."$ac"/.te.txt
+touch /home/clientshared/.Temp/."$ac"/.etf.txt
+touch /home/clientshared/.Temp/."$ac"/.s.txt
+touch /home/clientshared/.Temp/."$ac"/.t.txt
+touch /home/clientshared/.Temp/."$ac"/.c.txt
+touch /home/clientshared/.Temp/."$ac"/.p.txt
+sleep 3s
+
+
+prog=$(cat "/home/clientshared/.Temp/."$ac"/.prg.txt")
+echo "$prog"
+
+if [[ "$prog" == "Wiping" || "$prog" == "Testing" ]];
+then
+  true
+else
+  echo "Started Wiping"
+  echo "Wiping" > /home/clientshared/.Temp/."$ac"/.prg.txt
+  #send serial number
+  touch /home/clientshared/.Temp/."$ac"/.p.txt
+  echo "" > /home/clientshared/.Temp/."$ac"/.p.txt
+
+  touch /home/clientshared/.Temp/."$ac"/.te.txt
+  echo "" > /home/clientshared/.Temp/."$ac"/.te.txt
+
+  touch /home/clientshared/.Temp/."$ac"/.tr.txt
+  echo "" > /home/clientshared/.Temp/."$ac"/.tr.txt
+
+  touch /home/clientshared/.Temp/."$ac"/.etf.txt
+  echo "" > /home/clientshared/.Temp/."$ac"/.etf.txt
+
+  touch /home/clientshared/.Temp/."$ac"/.t.txt
+  echo "" > /home/clientshared/.Temp/."$ac"/.t.txt
+
+  touch /home/clientshared/.Temp/."$ac"/.c.txt
+  echo "" > /home/clientshared/.Temp/."$ac"/.c.txt
+  ## scan and get data
+
+    h1=$(cat /home/clientshared/.Temp/."$ac/.dev.txt)
+    h1=$(echo "$h1" | awk '{print $1}')
+    h1=${h1::-3}
+    echo "$h1"
+    dev7=$(find $(echo "$h1") -type d -name sd* | head -n 1)
+    dev7="sd${dev7##*sd}"
+    echo "$dev7"
+
+  s7=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $6}')
+  echo "$s7"
+
+
+  # fi
+  s5="$s7"
+  if [[ "$s5" == "?" ]]; then s5=""; else false; fi
+
+  if [[ ! -z "$s5" ]]
+    then
+      h1=$(cat /home/clientshared/.Temp/."$ac"/.dev.txt)
+      h1=$(echo "$h1" | awk '{print $1}')
+      h1=${h1::-3}
+      echo "$h1"
+      dev7=$(find $(echo "$h1") -type d -name sd* | head -n 1)
+      dev7="sd${dev7##*sd}"
+      echo "$dev7"
+      ## scan and get dat
+      hdsent=$(sudo /home/clientshared/.HD -dev /dev/"$dev7")
+      s7=$(echo "$hdsent" | grep "HDD Serial" | awk '{print $4}')
+      #send type
+      ttype=$(sudo smartctl -i /dev/"$dev7" | grep -i "ATA Version")
+      if [[ ! -z "$ttype" ]]; then t7="SATA"; else t7="SAS"; fi
+      echo "$t7" > /home/clientshared/.Temp/."$ac"/.t.txt
+      #rotation per minute
+      size1=$(sudo smartctl -i /dev/"$dev7" | grep "Form Factor:" | awk '{print $3}')
+      rpm=$(sudo smartctl -i /dev/"$dev7" | grep -i "rotation" | awk '{print $3,$4}')
+      rpm1=$(sudo smartctl -i /dev/"$dev7" | grep -i "solid")
+      if [[ ! -z $rpm1 ]]; then rpm="SSD"; else false; fi
+      #manufacturer and model
+      hdsent=$(sudo /home/clientshared/.HD -dev /dev/"$dev7")
+      mdl=$(echo "$hdsent" | grep "Model" | awk '{print $6,$7,$8,$9,$10,$11,$12,$13}')
+      manuf=$(echo "$hdsent" | grep "Model" | awk '{print $5}')
+      tmanuf=${manuf:0:2}
+      ttmanuf=${manuf:0:3}
+      if [[ "$tmanuf" == "ST" ]]; then manuf="SEAGATE"; mdl=$(echo "$hdsent" | grep "Model" | awk '{print $5}'); else false; fi
+      if [[ "$tmanuf" == "WD" && "$ttmanuf" != "WDC" ]]; then manuf="WDC"; mdl=$(echo "$hdsent" | grep "Model" | awk '{print $5}'); else false; fi
+      #send serial
+      touch /home/clientshared/.Temp/."$ac"/.s.txt
+      echo "$s7" > /home/clientshared/.Temp/."$ac"/.s.txt
+      #send type
+      echo "$t7" > /home/clientshared/.Temp/."$ac"/.t.txt
+      #Remove HPA
+      hpasectors=$(sudo hdparm -N /dev/"$dev7" | grep -i "max" | awk '{print $4}' | tr -d ",")
+      hpasectors=${hpasectors##*/}
+      remove=$(sudo hdparm -N p$hpasectors /dev/"$dev7")       remove=$(sudo hdparm -N /dev/"$dev7")
+      sleep 1s
+      #send capacity
+      c7=$(sudo smartctl -i /dev/"$dev7" | grep -i "capacity" | awk '{print $5,$6}' | tr -d "[ ]")
+      echo "$c7" > /home/clientshared/.Temp/."$ac"/.c.txt
+      echo "$c7 $t7" > /home/clientshared/.Temp/."$ac"/.tc.txt
+      #set Write cache
+      w=$(sudo hdparm -W1 /dev/"$dev7")
+      sleep 1s
+      w=$(sudo sdparm -s WCE /dev/"$dev7")
+      sleep 1s
+      ## start time
+      st=$(date '+%H:%M:%S')
+      sts=$(date '+%s' -d "$st")
+      dte=$(date "+%Y-%m-%d")
+      running=$(mysql -u TIS -pJasper2010! -h ls-4ea15f451c8aec4f3d3aaa1ae11f9f670b0e85ba.cbwhq8cxbmbu.us-east-1.rds.amazonaws.com --port 3306 -se "insert into jasper_client.desktop_abuse (serial_num, date_wipe, time_wipe) values ( '$s7', '$dte', '$st')")
+
+      #### wiping dump file
+      rm -f /home/clientshared/.Temp/."$ac"/.dump.txt
+      touch /home/clientshared/.Temp/."$ac"/.dump.txt
+      hdsent=$(sudo /home/clientshared/.HD -dev /dev/"$dev7")
+      #initial health and set to zero if ?
+      htx=$(echo "$hdsent" | grep "Health" | awk '{print $3}')
+      if [[ "$htx" == "?" ]]; then htx="0"; else true; fi
+      sleep 1
+      ##########################################
+      ### print up to window
+      echo "$h $d $s7 $t7 $c7 $mdl $rpm $htx $s"
+
+      ##date
+      dte=$(date "+%Y-%m-%d")
+
+      sleep 2
+      # ###Testing how to wipe
+      # echo "$t7" > /home/clientshared/.Temp/."$ac"/.t.txt
+      # echo "$c7 $t7" > /home/clientshared/.Temp/."$ac"/.tc.txt
+      ###
+      c7=$(sudo smartctl -i /dev/"$dev7" | grep -i "capacity" | awk '{print $5,$6}' | tr -d "[ ]")
+      echo "$c7" > /home/clientshared/.Temp/."$ac"/.c.txt
+      echo "$c7 $t7" > /home/clientshared/.Temp/."$ac"/.tc.txt
+      #get existing percetn if already SAS
+      p=$(sudo sg_requests -p /dev/"$dev7" | awk '{print $3}' | sed 's/%//g')
+      SSDD=$(sudo blockdev --getsize64 /dev/"$dev7")
+      test1=$(sudo smartctl -i /dev/"$dev7" | grep -i "(SPL-3)")
+      if [[ -z "$test1" ]]
+      then
+      ####################################start wiping if SATA
+      echo "Drive is SATA capable: Wiping"
+      rm -f /home/clientshared/.Temp/."$ac"/.log.log
+      touch /home/clientshared/.Temp/."$ac"/.log.log
+      SSDD=$(sudo blockdev --getsize64 /dev/"$dev7")
+      echo "" > /home/clientshared/.Temp/."$ac"/.log.log
+      sudo ddrescue -fnND -r 3 -s ${SSDD//[!0-9]/} -b 8 -K 0 --log-events=/home/clientshared/.Temp/."$ac"/.log.log /dev/zero /dev/"$dev7" > /home/clientshared/.Temp/."$ac"/.dump.txt &
+      sleep 2
+
+      ## start time loop
+      a=$(cat /home/clientshared/.Temp/."$ac"/.log.log)
+      while [[ -z "$a" ]]
+      do
+      ## CURRENT PERCENTAGE
+      a=$(cat /home/clientshared/.Temp/."$ac"/.log.log)
+      p=$(cat /home/clientshared/.Temp/."$ac"/.dump.txt | grep -a "pct" | tail -n 1 | awk '{print $3}' | tr -d " %, ")
+      echo "$p %" > /home/clientshared/.Temp/."$ac"/.p.txt
+      sleep 1
+      b="$p"
+      b=${b%.*}
+      if [ "$b" -gt 99 ]
+      then
+      final="pass"
+      else
+      true
+      fi
+      if [ "$b" -gt 10 ]
+      then
+      ch="Y"
+      else
+      ch="N"
+      fi
+      ## CURRENT TIME
+      ct=$(date '+%H:%M:%S')
+      cts=$(date '+%s' -d "$ct")
+
+      ## TIME ELAPSED
+      ets=$(expr $cts - $sts)
+      te=$(date -d "00:00:00 today + $ets seconds" '+%H:%M:%S')
+
+      ### TIME REMAINING
+      #time remaining in seconds
+      #trs=$(( $(expr $(expr $(expr 100 / $p)) - 1 ) * ets ))
+      trs=$(echo $(echo $(echo 100 / $p | bc -l) - 1 | bc -l) \* $ets | bc -l)
+      trs=${trs%.*}
+
+      #time remaining formatted
+      tr=$(date -d "00:00:00 today + $trs seconds" '+%H:%M:%S')
+
+      ### TOTAL TIME IT'LL TAKE
+      #total time it will take in seconds
+      tts=$((trs + ets))
+      tt=$(date -d "00:00:00 today + $tts seconds" '+%H:%M:%S')
+
+      ### TIME IT WILL FINISH
+      etf=$(date -d "$st today + $tts seconds" '+%I:%M %p')
+      #echo "
+      #
+      #Percent: $p
+
+      #Elapsed Time: $te
+
+      #Time Remaing: $tr
+
+      #Total Time: $tt
+
+      #Expected Time Finished: $etf
+      #"
+      touch /home/clientshared/.Temp/."$ac"/.p.txt
+      echo "$p %" > /home/clientshared/.Temp/."$ac"/.p.txt
+
+      touch /home/clientshared/.Temp/."$ac"/.te.txt
+      echo "$te" > /home/clientshared/.Temp/."$ac"/.te.txt
+
+      touch /home/clientshared/.Temp/."$ac"/.tr.txt
+      echo "$tr" > /home/clientshared/.Temp/."$ac"/.tr.txt
+
+      touch /home/clientshared/.Temp/."$ac"/.etf.txt
+      echo "$etf" > /home/clientshared/.Temp/."$ac"/.etf.txt
+
+      tr1=${tr::-3}
+      touch /home/clientshared/.Temp/."$ac"/.tr1.txt
+      echo "$tr1" > /home/clientshared/.Temp/."$ac"/.tr1.txt
+
+      done
+      #####WIPE AS SAS
+      else
+      ###start formatting
+      echo "Drive is not SAS capable and if was started is at $p percent"
+      sudo sg_format --format --ffmt=2 -Q -6 -e -l -b /dev/"$dev7"
+      sleep 3s
+      sudo sg_format --format --ffmt=2 -Q -6 -e -l /dev/"$dev7"
+      sleep 5s
+      sudo sg_format --format --ffmt=2 -Q -6 -e -l /dev/"$dev7"
+      sleep 3s
+      sudo smartctl -i /dev/"$dev7" | grep -i "rotation" | awk '{print $3,$4}'
+      sleep 5s
+      p=$(sudo sg_requests -p /dev/"$dev7" | awk '{print $3}' | sed 's/%//g')
+      if [[ -z "$p" ]]; then sudo sg_format --format -Q -6 -e -l /dev/"$dev7"; else true; fi
+      sleep 1s
+      p=$(sudo sg_requests -p /dev/"$dev7" | awk '{print $3}' | sed 's/%//g')
+      while [[ ! -z "$p" ]]
+      do
+      ## CURRENT PERCENTAGE
+
+      sleep 1
+
+      ## CURRENT TIME
+      ## CURRENT TIME
+      ct=$(date '+%H:%M:%S')
+      cts=$(date '+%s' -d "$ct")
+
+      ## TIME ELAPSED
+      ets=$(expr $cts - $sts)
+      te=$(date -d "00:00:00 today + $ets seconds" '+%H:%M:%S')
+
+      ### TIME REMAINING
+      #time remaining in seconds
+      #trs=$(( $(expr $(expr $(expr 100 / $p)) - 1 ) * ets ))
+      trs=$(echo $(echo $(echo 100 / $p | bc -l) - 1 | bc -l) \* $ets | bc -l)
+      trs=${trs%.*}
+
+      #time remaining formatted
+      tr=$(date -d "00:00:00 today + $trs seconds" '+%H:%M:%S')
+
+      ### TOTAL TIME IT'LL TAKE
+      #total time it will take in seconds
+      tts=$((trs + ets))
+      tt=$(date -d "00:00:00 today + $tts seconds" '+%H:%M:%S')
+
+      ### TIME IT WILL FINISH
+      etf=$(date -d "$st today + $tts seconds" '+%I:%M %p')
+      ### if goes over
+      b="$p"
+      b=${b%.*}
+      if [ "$b" -gt 99 ]
+      then
+      final="pass"
+      else
+      true
+      fi
+      if [ "$b" -gt 10 ]
+      then
+      ch="Y"
+      else
+      ch="N"
+      fi
+      #echo "
+      #
+      #Percent: $p
+
+      #Elapsed Time: $te
+
+      #Time Remaing: $tr
+
+      #Total Time: $tt
+
+      #Expected Time Finished: $etf
+      #"
+      touch /home/clientshared/.Temp/."$ac"/.p.txt
+      echo "$p %" > /home/clientshared/.Temp/."$ac"/.p.txt
+
+      touch /home/clientshared/.Temp/."$ac"/.te.txt
+      echo "$te" > /home/clientshared/.Temp/."$ac"/.te.txt
+
+      touch /home/clientshared/.Temp/."$ac"/.tr.txt
+      echo "$tr" > /home/clientshared/.Temp/."$ac"/.tr.txt
+
+      touch /home/clientshared/.Temp/."$ac"/.etf.txt
+      echo "$etf" > /home/clientshared/.Temp/."$ac"/.etf.txt
+
+      tr1=${tr::-3}
+      touch /home/clientshared/.Temp/."$ac"/.tr1.txt
+      echo "$tr1" > /home/clientshared/.Temp/."$ac"/.tr1.txt
+
+      p=$(sudo sg_requests -p /dev/"$dev7" | awk '{print $3}' | sed 's/%//g')
+
+      done
+      fi
+      ##done wiping
+      #####finished now done and clear counts
+      echo "Drive Started testing: $(date)"
+      echo "Testing" > /home/clientshared/.Temp/."$ac"/.prg.txt
+      touch /home/clientshared/.Temp/."$ac"/.p.txt
+      echo "" > /home/clientshared/.Temp/."$ac"/.p.txt
+
+      touch /home/clientshared/.Temp/."$ac"/.tr.txt
+      echo "" > /home/clientshared/.Temp/."$ac"/.tr.txt
+
+      ### What percent
+
+      #sample if it wipe, if it did, then proceed to test, else result=Failed: Verify
+      #sleep 30
+      sleep 15s
+      #verify if went over 97%
+        if [ "$final" == "pass" ]
+        then
+          echo "Drive Passed Write Sequence"
+          p="100%"
+
+          # # BAYS SEARCH
+
+          #Bay 96 SG DEV
+        sg7=$(sudo sg_map | grep "$dev7" | awk '{print $1}')
+        sgdev="sg${sg7##*sg}"
+        echo "$sgdev"
+
+          echo "$sgdev"
+
+          bloc=$(sudo sginfo -a /dev/"$sgdev" | grep -i "phys" | awk '{print $6}')
+          a=$(sudo sg_dd if=/dev/"$sgdev" of=- count=4MB bs="$bloc" dio=1 | od)
+          b=$(echo "$a" | tail -n 1)
+          echo "number of blocks for verify $b"
+          num=$(echo "$a" | wc -l)
+          if [[ "$b" -eq "17376444000" || "$b" -eq "17204400000" || "$b" -eq "172044000000" || "$b" -eq "173764440000" ]]; then num1="3"; else num1="1"; fi
+          #end verify
+          echo "num is $num1, if 3 then verifies, else 1"
+          if [[ "$num1" -eq 3 ]]
+          then
+                echo "Start Self Test for:"
+                echo ""
+                ht=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $3}')
+                if [[ "$ht" == "?" ]]; then ht=0; else false; fi
+                #begin testing
+                # does device support logging
+                t1=$(sudo smartctl -l selftest /dev/"$dev7" | grep -e "does not support")
+                if [[ -z "$t1" ]]
+                  #yes it does
+                then
+                  startest=$(sudo smartctl -t short /dev/"$dev7")
+                  t1=$(sudo smartctl -l selftest /dev/"$dev7" | grep -e "Background")
+                  sleep 3
+                  if [[ ! -z "$t1" ]]
+                  then
+                    startest=$(sudo smartctl -t short /dev/"$dev7")
+                    test=$(sudo smartctl -l selftest /dev/"$dev7" | grep -i "Self-test execution status:" )
+                    perc=$(echo "$test" | awk '{print $4}')
+                    count=1
+                    while [[ ! -z "$test" ]]
+                    do
+                      test=$(sudo smartctl -l selftest /dev/"$dev7" | grep -i "Self-test execution status:" )
+                      perc1=$(echo "$test" | awk '{print $1}')
+                      if [[ "$perc" != "$perc1" ]]
+                      then
+                        echo "$perc1"
+                      else
+                        true
+                      fi
+                      sleep 3
+                      if [[ "$count" -lt 210 ]]
+                      then
+                        count=$(($count + 1))
+                      else
+                        test=""
+                      fi
+                      perc=$(echo "$test" | awk '{print $1}')
+                    done
+                  else
+                    startest=$(sudo smartctl -t short /dev/"$dev7")
+                    sleep 1
+                    test=$(sudo smartctl -c /dev/"$dev7" | grep -i "remaining" )
+                    perc=$(echo "$test" | awk '{print $1}')
+                    count=1
+                    while [[ ! -z "$test" ]]
+                    do
+                      test=$(sudo smartctl -c /dev/"$dev7" | grep -i "remaining")
+                      perc1=$(echo "$test" | awk '{print $1}')
+                      if [[ "$perc" != "$perc1" ]]
+                      then
+                        echo "$perc1"
+                      else
+                        true
+                      fi
+                      sleep 1
+                      if [[ "$count" -lt 210 ]]
+                      then
+                        count=$(($count + 1))
+                      else
+                        test=""
+                      fi
+                      perc=$(echo "$test" | awk '{print $1}')
+                    done
+                  fi
+                  result=$(sudo smartctl -l selftest /dev/"$dev7" | grep "# 1")
+
+                  #is it the offline type?
+                  resulta=$(echo "$result" | grep "offline")
+                  #is it the completed type?
+                  resultb=$(echo "$result" | grep "Completed")
+
+                  if [[ ! -z "$resulta" ]]
+                    then
+                      resultc=$(sudo smartctl -l selftest /dev/"$dev7" | grep "# 1" | awk '{print $6,$7}')
+                        if [ "$resultc" == "without error" ]
+                          then
+                          ht=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $3}')
+                          if [[ "$ht" == "?" ]]; then ht=0; else ht="$ht"; fi
+                            if [ "$ht" -gt 59 ]
+                              then
+                              result="Passed"
+                              result2="Passed"
+                            else
+                              result2="Failed: Health"
+                              result="Failed"
+                            fi
+                        else
+                          result2="Failed: DST"
+                          result="Failed"
+                        fi
+                # different for SAS type
+                  elif [[ ! -z "$resultb" ]]
+                      then
+                        ht=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $3}')
+                        if [[ "$ht" == "?" ]]; then ht=0; else ht="$ht"; fi
+                        if [ "$ht" -gt 59 ]
+                          then
+                            result="Passed"
+                            result2="Passed"
+                        else
+                          result2="Failed: Health"
+                          result="Failed"
+                        fi
+                  else
+                      result2="Failed: DST"
+                      result="Failed"
+                    fi
+                else
+                  ht=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $3}')
+                  if [[ "$ht" == "?" ]]; then ht=0; else ht="$ht"; fi
+                  if [ "$ht" -gt 59 ]
+                    then
+                      result="Passed"
+                      result2="Passed"
+                  else
+                      result2="Failed: Health SAS"
+                      result="Failed"
+                  fi
+                fi
+          else
+              result2="Failed: Verify"
+              result="Failed"
+          fi
+
+          echo "$ac result = $result and result2 = $result2"
+          ##### testing end
+          #send serial
+          touch /home/clientshared/.Temp/."$ac"/.s.txt
+          echo "$s7" > /home/clientshared/.Temp/."$ac"/.s.txt
+          #send type
+          echo "$t7" > /home/clientshared/.Temp/."$ac"/.t.txt
+          #send capacity
+          if [[ -z "$c7" ]]
+          then
+            c7=$(sudo smartctl -i /dev/"$dev7" | grep -i "capacity" | awk '{print $5,$6}' | tr -d "[ ]")
+          else
+            false
+          fi
+          echo "$c7" > /home/clientshared/.Temp/."$ac"/.c.txt
+          echo "$c7 $t7" > /home/clientshared/.Temp/."$ac"/.tc.txt
+          echo "$result" > /home/clientshared/.Temp/."$ac"/.prg.txt
+          echo "" > /home/clientshared/.Temp/."$ac"/.tr.txt
+          echo "$te" > /home/clientshared/.Temp/."$ac"/.te.txt
+          echo "" > /home/clientshared/.Temp/."$ac"/.etf.txt
+          if [[ "$result" == "Passed" ]] && [[ "$ht" -eq 100 ]]
+            then result="Tested for Full Function R2/Ready for Reuse"
+          elif [[ "$result" == "Passed" && "$ht" -lt 100 ]]
+            then result="Tested for Key Function R2/Ready for Resale"
+          else false
+          fi
+          echo "time to test: $count"
+          echo "device: $dev7"
+          else
+            sleep 1
+
+            if [[ "$ad" == 0 ]]; then ad=0; else false; fi
+            if [[ "$ad" == 1 ]]; then ad=1; else false; fi
+            if [[ "$ad" == 2 ]]; then ad=4; else false; fi
+            if [[ "$ad" == 3 ]]; then ad=5; else false; fi
+
+            h1=$(cat /home/clientshared/.Temp/.h1=$(cat /home/clientshared/.Temp/."$ac/.dev.txt)/.dev.txt)
+            h1=$(echo "$h1" | awk '{print $1}')
+            h1=${h1::-3}
+            echo "$h1"
+            dev7=$(find $(echo "$h1") -type d -name sd* | head -n 1)
+            dev7="sd${dev7##*sd}"
+            echo "$dev7"
+
+            sleep 1
+            ht=$(sudo /home/clientshared/.HD -solid -dev /dev/"$dev7" | awk '{print $3}')
+            if [[ "$ht" == "?" ]] || [[ "$ht" == "" ]]; then ht=0; else false; fi
+            echo "" > /home/clientshared/.Temp/."$ac"/.tr.txt
+            echo "$te" > /home/clientshared/.Temp/."$ac"/.te.txt
+            echo "" > /home/clientshared/.Temp/."$ac"/.etf.txt
+            result2="Failed: Wiping"
+            result="Failed"
+            #send serial
+            #send type
+            echo "$t7" > /home/clientshared/.Temp/."$ac"/.t.txt
+            #send capacity
+            if [[ -z "$c7" ]]
+            then
+              c7=$(sudo smartctl -i /dev/"$dev7" | grep -i "capacity" | awk '{print $5,$6}' | tr -d "[ ]")
+            else
+              false
+            fi
+            echo "$c7" > /home/clientshared/.Temp/."$ac"/.c.txt
+            echo "$c7 $t7" > /home/clientshared/.Temp/."$ac"/.tc.txt
+            echo "$result" > /home/clientshared/.Temp/."$ac"/.prg.txt
+          fi
+          dte=$(date "+%Y-%m-%d")
+          cserial=$(sudo dmidecode -t system | grep Serial | awk '{print $3}')
+      if [[ -z "$ch" ]]; then ch="N"; else true; fi
+      if [[ -z "$c7" ]]
+      then
+        c7=$(sudo smartctl -i /dev/"$dev7" | grep -i "capacity" | awk '{print $5,$6}' | tr -d "[ ]")
+      else
+        false
+      fi
+      echo "$c7" > /home/clientshared/.Temp/."$ac"/.c.txt
+      echo "$c7 $t7" > /home/clientshared/.Temp/."$ac"/.tc.txt
+      me=$(whoami)
+      touch /home/clientshared/.Temp/."$ac"/.tr1.txt
+      echo "" > /home/clientshared/.Temp/."$ac"/.tr1.txt
+      me=$(whoami)
+    touch /home/clientshared/.Temp/."$ac"/.tr1.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.tr1.txt
+
+    ip_address=$(wget -qO- http://ipecho.net/plain | xargs echo)
+    producing_count=$(mysql -u TIS -pJasper2010! -h ls-4ea15f451c8aec4f3d3aaa1ae11f9f670b0e85ba.cbwhq8cxbmbu.us-east-1.rds.amazonaws.com --port 3306 -se "select '$s7' from jasperprogram.producing where serial = '$s7'" | wc -l)
+    if [[ "$producing_count" == 0 ]]; then process="Wipe"; else process="Repair $producing_count"; fi
+    running=$(mysql -u TIS -pJasper2010! -h ls-4ea15f451c8aec4f3d3aaa1ae11f9f670b0e85ba.cbwhq8cxbmbu.us-east-1.rds.amazonaws.com --port 3306 -se "insert into jasper_client.desktop_wiping (clients, process, result, charge, serial_number, manufacturer, model, capacity, type_drive, size, RPM, date_wiped, job_number, employee, system_name, sub_system_name, system_serial, software_version, compliance, sub_result, time_lapsed, health_final, perc_done) values ( '$ip_address', '$process', '$result', '$ch', '$s7', '$manuf', '$mdl', '$c7', '$t7', '$size1', '$rpm', '$dte', '$loadnm', '$employee', '$me', '$compnum', '$cserial', 'Jasper Version 3.01', 'NIST-800-88 rev1: Clear: Overwrite Method', '$result2', '$te', '$ht', '$p')")
+    echo "'$ip_address', '$process', '$result', '$ch', '$s7', '$manuf', '$mdl', '$c7', '$t7', '$size1', '$rpm', '$dte', '$me', '$compnum', '$cserial', 'Jasper Wiping v2.1', 'NIST-800-88 rev1: Clear: Overwrite Method', '$result2', '$te', '$htx', '$ht', '$p'" > /home/clientshared/.Temp/."$ac"/result.txt
+ else
+    echo "No device shown"
+    #is no device shown
+    touch /home/clientshared/.Temp/."$ac"/.p.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.p.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.te.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.te.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.tr.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.tr.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.etf.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.etf.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.prg.txt
+    echo "No Device" > /home/clientshared/.Temp/."$ac"/.prg.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.c.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.c.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.tc.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.tc.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.tr1.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.tr1.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.s.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.s.txt
+
+    touch /home/clientshared/.Temp/."$ac"/.stopping.txt
+    echo "" > /home/clientshared/.Temp/."$ac"/.stopping.txt
+fi
+fi
+echo "Process $ac done at $p percent" && exit
+
+############
